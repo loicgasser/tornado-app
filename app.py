@@ -5,8 +5,7 @@ import tornado.ioloop as ioloop
 import tornado.web as web
 import tornado.httpserver as httpserver
 
-from db import load_db
-from settings import load_settings
+from settings import load_settings, get_app_settings
 
 
 class MainHandler(web.RequestHandler):
@@ -33,19 +32,9 @@ if __name__ == '__main__':
     if env not in ('dev', 'prod'):
         sys.exit(1)
     load_settings(env)
-    db_settings = {
-        'port': int(os.getenv('DB_PORT')),
-        'host': os.getenv('DB_HOST'),
-        'name': os.getenv('DB_NAME')
-    }
-    app_settings = {
-        'autoreload': bool(os.getenv('AUTORELOAD')),
-        'debug': bool(os.getenv('DEBUG')),
-        'serve_traceback': bool(os.getenv('SERVE_TRACEBACK')),
-        'db': load_db(db_settings)
-    }
-    print(app_settings)
+    app_settings = get_app_settings()
     app = make_app(app_settings)
+    print(app_settings)
     port = int(os.getenv('SERVE_PORT'))
     if env == 'dev':
         app.listen(port)
