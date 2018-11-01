@@ -3,6 +3,7 @@ SHELL=/bin/bash
 PY_VENV=.venv
 PY_CMD=${PY_VENV}/bin/python
 PIP_CMD=${PY_VENV}/bin/pip
+NOSE_CMD=${PY_VENV}/bin/nose2
 
 .PHONY: setup-dev
 setup-dev: .venv ${PY_VENV}/requirements-common.timestamp ${PY_VENV}/requirements-dev.timestamp
@@ -17,6 +18,10 @@ serve-dev: setup-dev
 .PHONY: serve-prod
 serve-prod:
 	${PY_CMD} app.py prod
+
+.PHONY: test
+test:
+	${NOSE_CMD} tests
 
 .venv:
 	python3.6 -m venv .venv
