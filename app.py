@@ -1,30 +1,13 @@
 import os
 import sys
-import tornado.gen as gen
-import tornado.ioloop as ioloop
-import tornado.web as web
-import tornado.httpserver as httpserver
+from tornado import web, ioloop, httpserver
 
 from settings import load_settings, get_app_settings
-
-
-class MainHandler(web.RequestHandler):
-    # https://www.tornadoweb.org/en/stable/gen.html
-    @gen.coroutine
-    def get(self):
-        db = self.settings['db']
-        collection = db.test_collection
-        result = yield collection.insert_one({'key': 'value'})
-        print('result %s' % repr(result.inserted_id))
-        print(dir(result))
-        print(result.inserted_id)
-        self.write("Hello World")
+from urls import url_patterns
 
 
 def make_app(app_settings):
-    return web.Application([
-        (r"/", MainHandler),
-    ], **app_settings)
+    return web.Application(url_patterns, **app_settings)
 
 
 if __name__ == '__main__':
