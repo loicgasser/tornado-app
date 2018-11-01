@@ -10,6 +10,14 @@ setup-dev: .venv ${PY_VENV}/requirements-common.timestamp ${PY_VENV}/requirement
 .PHONY: setup-prod
 setup-prod: .venv ${PY_VENV}/requirements-common.timestamp ${PY_VENV}/requirements-prod.timestamp
 
+.PHONY: serve-dev
+serve-dev: setup-dev
+	${PY_CMD} app.py dev
+
+.PHONY: serve-prod
+serve-prod:
+	${PY_CMD} app.py prod
+
 .venv:
 	python3.6 -m venv .venv
 	${PIP_CMD} install --upgrade pip
