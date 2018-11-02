@@ -1,3 +1,4 @@
+import time
 from tornado import gen, ioloop, web, httpserver, escape
 from bson.objectid import ObjectId
 
@@ -46,6 +47,7 @@ class DraftHandlerPost(DBMixin, web.RequestHandler):
                 'error': 'missing part deck or sideboard'
             }
             return
+        request_data['timestamp'] = time.time()
         try:
             result = yield self.collection.insert_one(request_data)
             response = {
