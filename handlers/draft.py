@@ -36,10 +36,6 @@ class DraftHandlerPost(DBMixin, web.RequestHandler):
 
     SUPPORTED_METHODS = ('POST')  # 405 not allowed if something else
 
-    def initialize(self):
-        self.db = self.settings['db']
-        self.collection = self.db.test_collection
-
     @gen.coroutine
     def post(self):
         request_data = escape.json_decode(self.request.body)
